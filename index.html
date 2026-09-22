@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shubham Sharma — Cloud Data Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F9FD;
+    --panel:#FFFFFF;
+    --panel-2:#EAF2FC;
+    --line:#DAE6F5;
+    --text:#152238;
+    --text-muted:#5C6B85;
+    --blue:#2E6FF2;
+    --orange:#FF7A29;
+    --radius-s:8px;
+    --radius-m:14px;
+    --safe-t:env(safe-area-inset-top,0px);
+    --safe-b:env(safe-area-inset-bottom,0px);
+  }
+  :root:not([data-theme="light"]){
+    --bg:#F5F9FD; --panel:#FFFFFF; --panel-2:#EAF2FC; --line:#DAE6F5;
+    --text:#152238; --text-muted:#5C6B85; --blue:#2E6FF2; --orange:#FF7A29;
+  }
+  :root[data-theme="dark"]{
+    --bg:#F5F9FD; --panel:#FFFFFF; --panel-2:#EAF2FC; --line:#DAE6F5;
+    --text:#152238; --text-muted:#5C6B85; --blue:#2E6FF2; --orange:#FF7A29;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:calc(72px + var(--safe-t));}
+  body{
+    background:
+      radial-gradient(circle, var(--line) 1px, transparent 1.4px) 0 0/28px 28px,
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', -apple-system, sans-serif;
+    line-height:1.6;
+    padding-top:var(--safe-t);
+    padding-bottom:var(--safe-b);
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; font-weight:600; letter-spacing:-0.01em;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+ 
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,249,253,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding-top:var(--safe-t);
+  }
+  .nav-inner{max-width:920px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between;}
+  .nav-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem;}
+  .status-chip{
+    font-family:'Space Grotesk',sans-serif; font-size:0.72rem; color:var(--blue);
+    background:var(--panel-2); border:1px solid var(--line); padding:4px 10px; border-radius:999px;
+    letter-spacing:0.01em;
+  }
+  @media (max-width:600px){ .status-chip{display:none;} }
+  .nav-links{display:flex; gap:24px; list-style:none;}
+  .nav-links a{font-size:0.9rem; color:var(--text-muted); text-decoration:none; transition:color .2s; font-weight:500;}
+  .nav-links a:hover{color:var(--blue);}
+  .nav-toggle{display:none; background:none; border:none; color:var(--text); font-size:1.4rem; cursor:pointer;}
+  @media (max-width:760px){
+    .nav-links{position:fixed; top:calc(56px + var(--safe-t)); left:0; right:0; background:var(--panel);
+      flex-direction:column; gap:0; border-bottom:1px solid var(--line); transform:translateY(-120%);
+      transition:transform .25s ease; padding:8px 0; box-shadow:0 12px 24px rgba(21,34,56,0.08);}
+    .nav-links.open{transform:translateY(0);}
+    .nav-links li{border-top:1px solid var(--line);}
+    .nav-links a{display:block; padding:14px 24px;}
+    .nav-toggle{display:block;}
+  }
+ 
+  .hero{position:relative; padding:88px 0 60px; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
+  @media (max-width:840px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{color:var(--blue); font-size:0.95rem; margin-bottom:14px; font-weight:600;}
+  .hero h1{font-size:clamp(2.2rem, 5.2vw, 3.4rem); line-height:1.12; margin-bottom:18px;}
+  .hero h1 em{font-style:normal; color:var(--orange);}
+  .hero p.lede{color:var(--text-muted); font-size:1.08rem; max-width:52ch; margin-bottom:28px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:var(--radius-s);
+    font-weight:600; font-size:0.95rem; text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:transform .15s ease, background .2s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--orange); color:#FFFFFF;}
+  .btn-primary:hover{background:#ff8c47;}
+  .btn-ghost{border-color:var(--line); color:var(--text); background:var(--panel);}
+  .btn-ghost:hover{border-color:var(--blue); color:var(--blue);}
+ 
+  .pipeline-wrap{position:relative;}
+  .pipeline-wrap svg{width:100%; height:auto;}
+  .node-label{font-family:'Inter',sans-serif; font-size:11px; fill:var(--text-muted);}
+  .node-dot{fill:var(--panel-2); stroke:var(--blue); stroke-width:1.5;}
+  .flow-dot{fill:var(--orange);}
+  @media (prefers-reduced-motion:no-preference){
+    .flow-path{stroke-dasharray:6 10; animation:dash 3.5s linear infinite;}
+    @keyframes dash{ to{ stroke-dashoffset:-160; } }
+    .flow-dot{ animation:flowmove 6s linear infinite; }
+    @keyframes flowmove{ 0%{ offset-distance:0%; } 100%{ offset-distance:100%; } }
+  }
+ 
+  section{padding:60px 0; border-top:1px solid var(--line);}
+  .section-head{margin-bottom:34px;}
+  .section-head .kicker{color:var(--blue); font-size:0.85rem; font-weight:700; margin-bottom:8px;}
+  .section-head h2{font-size:1.8rem;}
+  .section-head p{color:var(--text-muted); margin-top:10px; max-width:60ch;}
+ 
+  .summary p{font-size:1.08rem; max-width:70ch; color:#33415C;}
+ 
+  .timeline{position:relative; padding-left:28px; border-left:1px solid var(--line);}
+  .tl-company{margin-bottom:34px;}
+  .tl-company:last-child{margin-bottom:0;}
+  .tl-company-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+  .tl-company-head h3{font-size:1.25rem; position:relative;}
+  .tl-company-head h3::before{
+    content:''; position:absolute; left:-33px; top:8px; width:9px; height:9px; border-radius:50%;
+    background:var(--orange);
+  }
+  .tl-total{color:var(--text-muted); font-size:0.88rem;}
+  details.role{border-bottom:1px solid var(--line); padding:14px 0;}
+  details.role:first-of-type{border-top:1px solid var(--line);}
+  details.role summary{cursor:pointer; list-style:none; display:flex; justify-content:space-between; gap:16px; align-items:center;}
+  details.role summary::-webkit-details-marker{display:none;}
+  .role-title{font-weight:600;}
+  .role-dates{color:var(--text-muted); font-size:0.86rem; white-space:nowrap;}
+  .role-chevron{color:var(--blue); transition:transform .2s ease; flex-shrink:0;}
+  details[open] .role-chevron{transform:rotate(90deg);}
+  .role-body{padding-top:14px; color:#3B4A66; font-size:0.96rem;}
+  .role-body ul{padding-left:20px; display:flex; flex-direction:column; gap:8px;}
+ 
+  .card-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:16px;}
+  @media (max-width:640px){ .card-grid{grid-template-columns:1fr;} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-m); padding:20px;
+    box-shadow:0 6px 18px rgba(46,111,242,0.06);}
+  .card .tag{font-size:0.78rem; color:var(--blue); margin-bottom:8px; display:inline-block; font-weight:600;}
+  .card h4{font-family:'Inter',sans-serif; font-weight:600; font-size:0.98rem; line-height:1.4;}
+  .cert-card{display:flex; gap:14px; align-items:flex-start;}
+  .cert-icon{
+    width:38px; height:38px; border-radius:50%; background:var(--panel-2); border:1px solid var(--blue);
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;
+  }
+  .cert-body h4{font-size:0.95rem; margin-bottom:4px;}
+  .cert-body p{color:var(--text-muted); font-size:0.85rem;}
+ 
+  /* migration */
+  .migration-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:640px){ .migration-grid{grid-template-columns:1fr;} }
+  .mig-card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px 20px;}
+  .mig-path{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.98rem; flex-wrap:wrap;}
+  .mig-arrow{color:var(--orange); font-size:1rem;}
+  .mig-card p{color:var(--text-muted); font-size:0.86rem; margin-top:8px;}
+ 
+  .skill-filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;}
+  .filter-chip{
+    padding:8px 16px; border-radius:999px; border:1px solid var(--line); background:var(--panel);
+    color:var(--text-muted); font-size:0.86rem; cursor:pointer; transition:all .2s ease; font-weight:500;
+  }
+  .filter-chip.active{border-color:var(--orange); color:var(--orange); background:#FFF1E7;}
+  .skill-groups{display:flex; flex-direction:column; gap:22px;}
+  .skill-group{display:none;}
+  .skill-group.visible{display:block;}
+  .skill-group h4{font-size:0.85rem; color:var(--text-muted); font-weight:700; margin-bottom:12px;}
+  .skill-tags{display:flex; flex-wrap:wrap; gap:10px;}
+  .skill-tag{
+    padding:8px 14px; background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius-s);
+    font-size:0.88rem;
+  }
+ 
+  .edu-item{display:flex; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .edu-item:last-child{border-bottom:none;}
+  .edu-item h4{font-size:1rem; font-weight:600; font-family:'Inter',sans-serif;}
+  .edu-item p{color:var(--text-muted); font-size:0.9rem;}
+  .edu-dates{color:var(--text-muted); font-size:0.88rem; white-space:nowrap; text-align:right;}
+ 
+  /* personal section */
+  .personal-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:32px; align-items:center;}
+  @media (max-width:760px){ .personal-grid{grid-template-columns:1fr;} }
+  .valley-art{width:100%; height:auto;}
+  .personal-text p{font-size:1.02rem; color:#33415C; max-width:62ch;}
+  .personal-text p + p{margin-top:14px;}
+  .hobby-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+  .hobby-tag{
+    padding:8px 16px; background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    font-size:0.88rem; font-weight:500; display:flex; align-items:center; gap:6px;
+  }
+ 
+  .drives{background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius-m); padding:28px;}
+  .drives p{font-size:1.02rem; color:#33415C; max-width:65ch;}
+ 
+  footer{padding:60px 0 calc(48px + var(--safe-b)); border-top:1px solid var(--line); background:var(--panel-2);}
+  .contact-row{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;}
+  .contact-row h2{font-size:1.9rem; max-width:14ch;}
+  .contact-links{display:flex; flex-direction:column; gap:10px; align-items:flex-start;}
+  .contact-links a{text-decoration:none; font-size:1rem; display:flex; align-items:center; gap:8px; font-weight:500;}
+  .contact-links a:hover{color:var(--blue);}
+  .foot-meta{margin-top:40px; color:var(--text-muted); font-size:0.85rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+ 
+  :focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+</style>
+</head>
+<body>
+ 
+<nav>
+  <div class="nav-inner">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="nav-name">Shubham Sharma</span>
+      <span class="status-chip">● available for opportunities</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#migration">Data Migration</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#personal">Personal</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+ 
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Delhi, India</div>
+      <h1>Shubham Sharma<br>builds the <em>pipelines</em><br>behind the decisions.</h1>
+      <p class="lede">Lead Software Engineer and Cloud Data Engineer with 6+ years turning messy, multi-cloud data into something Insurance, Banking, and Life Sciences teams can actually trust and act on.</p>
+      <div class="cta-row">
+        <a href="#experience" class="btn btn-primary">See the work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="pipeline-wrap">
+      <svg viewBox="0 0 320 320" role="img" aria-label="Diagram of cloud platforms connected in a data pipeline">
+        <circle cx="160" cy="160" r="130" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <path class="flow-path" d="M 160 30 A 130 130 0 1 1 159 30" fill="none" stroke="var(--blue)" stroke-width="1.5" opacity="0.5"/>
+        <circle class="flow-dot" r="4" style="offset-path:path('M 160 30 A 130 130 0 1 1 159 30');"/>
+        <g>
+          <circle class="node-dot" cx="160" cy="30" r="26"/>
+          <text class="node-label" x="160" y="34" text-anchor="middle">AWS</text>
+        </g>
+        <g>
+          <circle class="node-dot" cx="290" cy="160" r="26"/>
+          <text class="node-label" x="290" y="164" text-anchor="middle">GCP</text>
+        </g>
+        <g>
+          <circle class="node-dot" cx="160" cy="290" r="26"/>
+          <text class="node-label" x="160" y="294" text-anchor="middle">Azure</text>
+        </g>
+        <g>
+          <circle class="node-dot" cx="30" cy="160" r="26"/>
+          <text class="node-label" x="30" y="164" text-anchor="middle">OCI</text>
+        </g>
+        <g>
+          <circle class="node-dot" cx="160" cy="160" r="34" style="stroke:var(--orange);"/>
+          <text class="node-label" x="160" y="156" text-anchor="middle" style="fill:var(--orange); font-weight:700;">Databricks</text>
+          <text class="node-label" x="160" y="170" text-anchor="middle">+ PySpark</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+ 
+<section id="about" class="summary">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">About</div>
+      <h2>Data that has to be right, at a scale that doesn't forgive mistakes.</h2>
+    </div>
+    <p>I work across every major public cloud — AWS, GCP, Azure, and OCI — building the pipelines that move and reshape data for Insurance, Banking, and Life Sciences organizations. Most of my time goes into making sure that data is correct before anyone downstream makes a decision on it: profiling it, validating it, governing it, and automating the checks so problems surface early. I'm certified across four clouds plus Salesforce, and I still enjoy learning the next platform more than defending the last one.</p>
+  </div>
+</section>
+ 
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Experience</div>
+      <h2>6+ years, four companies, one thread: reliable data.</h2>
+    </div>
+ 
+    <div class="timeline">
+ 
+      <div class="tl-company">
+        <div class="tl-company-head">
+          <h3>Virtusa</h3>
+          <span class="tl-total">4 yrs 2 mo · Remote / Delhi</span>
+        </div>
+ 
+        <details class="role" open>
+          <summary>
+            <span><span class="role-title">Lead Software Engineer</span></span>
+            <span class="role-dates">Feb 2024 — Present</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <ul>
+              <li>Delivered Master Data Management (MDM) using Informatica MDM alongside Databricks, PySpark, and SQL across Oracle and SQL Server systems.</li>
+              <li>Built pipelines and jobs to bring data from various heterogeneous source systems into the Databricks Delta Lakehouse, landing it into Delta tables and consolidating it into common tables with data quality rules applied at each stage.</li>
+              <li>Adopted Databricks Asset Bundles (DABs) to package and migrate code reliably from Dev to QA to Production, standardizing deployment across environments.</li>
+              <li>Achieved successful, repeatable production deployment of pipelines and jobs using asset bundles, cutting down manual release effort and deployment errors.</li>
+              <li>Implemented address verification using AWS Location Service and Lambda, alongside Informatica Address Verifier, and evaluated Loqate as an alternative solution.</li>
+              <li>Used the OpenAI API with prompt-engineered requests to cleanse and standardize data, passing raw records through the model to get structured, cleaned output.</li>
+              <li>Used Octopai for data lineage and impact analysis, improving transparency and governance compliance.</li>
+              <li>Performed data profiling, cleansing, and validation in Python and SQL to improve master data accuracy.</li>
+              <li>Partnered with business and governance teams to define data quality rules and golden record logic.</li>
+            </ul>
+          </div>
+        </details>
+ 
+        <details class="role">
+          <summary>
+            <span><span class="role-title">Senior Software Engineer</span></span>
+            <span class="role-dates">Sep 2023 — 2024</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <ul>
+              <li>Built scalable ETL pipelines on Apache Spark / Databricks to ingest, transform, and load data from varied sources.</li>
+              <li>Tuned Spark workloads and cluster configuration for performance and efficient resource use.</li>
+              <li>Created automated data-quality validation frameworks for accuracy, completeness, and consistency.</li>
+              <li>Connected Databricks with Azure, AWS, and GCP for seamless data movement and storage.</li>
+              <li>Supported ML feature engineering, training, and deployment work using MLflow and Delta Lake.</li>
+              <li>Designed a Page-Object-Model automation framework with Selenium WebDriver, TestNG, and Cucumber (BDD), cutting manual regression effort.</li>
+            </ul>
+          </div>
+        </details>
+ 
+        <details class="role">
+          <summary>
+            <span><span class="role-title">Consultant Technology</span></span>
+            <span class="role-dates">Aug 2022 — 2023</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <ul>
+              <li>Led an end-to-end database migration from Oracle to AWS Aurora with schema alignment and minimal downtime.</li>
+              <li>Built a Python/PySpark data-reconciliation utility to validate accuracy between source and target post-migration.</li>
+              <li>Developed an automated SQL code-conversion tool across Oracle, SQL Server, PostgreSQL, and Aurora.</li>
+              <li>Used AWS SCT for schema transformation and optimization during modernization.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+ 
+      <div class="tl-company">
+        <div class="tl-company-head">
+          <h3>Publicis Sapient</h3>
+          <span class="tl-total">6 months</span>
+        </div>
+        <details class="role">
+          <summary>
+            <span><span class="role-title">Associate Engineer</span></span>
+            <span class="role-dates">Mar 2022 — Aug 2022</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <ul>
+              <li>Built and maintained ETL pipelines moving Salesforce data into enterprise data platforms with Python, SQL, and Databricks.</li>
+              <li>Handled Salesforce integration with downstream systems for consistent, timely synchronization.</li>
+              <li>Ran data validation and quality checks directly in Salesforce using SOQL via the Developer Console.</li>
+              <li>Worked with business users on Salesforce objects, relationships, and field mappings for accurate transformations.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+ 
+      <div class="tl-company">
+        <div class="tl-company-head">
+          <h3>Tata Consultancy Services</h3>
+          <span class="tl-total">1 yr 8 mo</span>
+        </div>
+        <details class="role">
+          <summary>
+            <span><span class="role-title">Assistant System Engineer</span></span>
+            <span class="role-dates">Aug 2020 — Mar 2022</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <ul>
+              <li>Built end-to-end pipelines in OCI Data Flow with Python and PySpark for multiple Oracle Fusion ERP modules.</li>
+              <li>Orchestrated OCI Data Integration jobs to automate extraction, transformation, and loading across ERP sources.</li>
+              <li>Optimized PySpark scripts for performance and reliability on large enterprise datasets.</li>
+              <li>Integrated Finance, Procurement, and Projects ERP data into a centralized data lake and reporting layer.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+ 
+      <div class="tl-company">
+        <div class="tl-company-head">
+          <h3>Artifiq</h3>
+          <span class="tl-total">3 months</span>
+        </div>
+        <details class="role">
+          <summary>
+            <span><span class="role-title">Artificial Intelligence Intern</span></span>
+            <span class="role-dates">May 2019 — Jul 2019</span>
+            <span class="role-chevron">›</span>
+          </summary>
+          <div class="role-body">
+            <p>Early hands-on exposure to applied AI — the starting point of a path that led into cloud data engineering.</p>
+          </div>
+        </details>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<section id="migration">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Data Migration Experience</div>
+      <h2>Moving data between systems without losing trust in it.</h2>
+      <p>Migrations across databases, clouds, and third-party sources — where getting the data right matters more than getting it done fast.</p>
+    </div>
+    <div class="migration-grid">
+      <div class="mig-card">
+        <div class="mig-path">SQL Server <span class="mig-arrow">→</span> Salesforce</div>
+        <p>Structured migration of relational data into Salesforce objects with field-mapping validation.</p>
+      </div>
+      <div class="mig-card">
+        <div class="mig-path">SQL Server <span class="mig-arrow">→</span> Databricks</div>
+        <p>Bulk and incremental data movement into Databricks for downstream transformation and analytics.</p>
+      </div>
+      <div class="mig-card">
+        <div class="mig-path">REST API <span class="mig-arrow">→</span> Databricks Table</div>
+        <p>Flattened nested REST API payloads into structured Databricks tables for consistent querying.</p>
+      </div>
+      <div class="mig-card">
+        <div class="mig-path">Oracle <span class="mig-arrow">→</span> AWS Aurora</div>
+        <p>End-to-end database migration with schema alignment, reconciliation, and minimal downtime.</p>
+      </div>
+      <div class="mig-card">
+        <div class="mig-path">S&amp;P Delta Share Catalog</div>
+        <p>Integrated external S&amp;P data via Delta Sharing directly into internal Databricks catalogs.</p>
+      </div>
+      <div class="mig-card">
+        <div class="mig-path">Kensho Link API <span class="mig-arrow">→</span> Insurance Data</div>
+        <p>Pulled and reconciled Insurance Broker and Customer data via the Kensho Link API into internal systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="publications">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Publications &amp; Research</div>
+      <h2>Peer-reviewed work on ML and networked systems.</h2>
+      <p>Research contributions spanning machine learning applications, network security, and cloud/fog computing architectures.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <span class="tag">Research Paper</span>
+        <h4>A Machine Learning Approach Toward Meal Classification and Assessment of Nutrients Value Based on Weather Conditions</h4>
+      </div>
+      <div class="card">
+        <span class="tag">Research Paper</span>
+        <h4>Machine Learning Approach for Network Intrusion Detection Systems</h4>
+      </div>
+      <div class="card">
+        <span class="tag">Research Paper</span>
+        <h4>Intelligent Approach for Network Intrusion Detection System (NIDS) Utilizing Machine Learning (ML)</h4>
+      </div>
+      <div class="card">
+        <span class="tag">Research Paper</span>
+        <h4>Fog Computing: Mitigating the Limitations of Cloud Computing</h4>
+      </div>
+      <div class="card">
+        <span class="tag">Research Paper</span>
+        <h4>Real-Time Patient Health Monitoring</h4>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="certifications">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Certifications</div>
+      <h2>Certified across four clouds — and counting.</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card cert-card">
+        <div class="cert-icon">☁️</div>
+        <div class="cert-body"><h4>Azure Data Engineer Associate</h4><p>Microsoft Certified</p></div>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-icon">🌩️</div>
+        <div class="cert-body"><h4>Associate Cloud Engineer</h4><p>Google Cloud Certified</p></div>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-icon">🧭</div>
+        <div class="cert-body"><h4>Certified Architect Associate (2023)</h4><p>Oracle Cloud Infrastructure</p></div>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-icon">🤖</div>
+        <div class="cert-body"><h4>Certified AI Associate</h4><p>Salesforce</p></div>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-icon">🔁</div>
+        <div class="cert-body"><h4>Certified Scrum Master</h4><p>Virtusa Certified</p></div>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-icon">✅</div>
+        <div class="cert-body"><h4>Agile Tester (CTFL-AT)</h4><p>ISTQB</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Skills</div>
+      <h2>The toolkit, end to end.</h2>
+    </div>
+    <div class="skill-filters" id="skillFilters">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="cloud">Cloud Platforms</button>
+      <button class="filter-chip" data-filter="eng">Data Engineering &amp; ETL</button>
+      <button class="filter-chip" data-filter="crm">CRM &amp; Integration</button>
+      <button class="filter-chip" data-filter="test">Testing &amp; Automation</button>
+      <button class="filter-chip" data-filter="practice">Practices</button>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-group visible" data-group="cloud">
+        <h4>Cloud Platforms</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">AWS</span><span class="skill-tag">Azure</span>
+          <span class="skill-tag">GCP</span><span class="skill-tag">Oracle Cloud Infrastructure (OCI)</span>
+          <span class="skill-tag">AWS Aurora</span><span class="skill-tag">AWS SCT</span>
+        </div>
+      </div>
+      <div class="skill-group visible" data-group="eng">
+        <h4>Data Engineering &amp; ETL</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Databricks</span><span class="skill-tag">Databricks Delta Lakehouse</span>
+          <span class="skill-tag">Databricks Asset Bundles</span>
+          <span class="skill-tag">PySpark</span><span class="skill-tag">Python</span><span class="skill-tag">SQL</span>
+          <span class="skill-tag">Informatica MDM</span><span class="skill-tag">Delta Lake</span>
+          <span class="skill-tag">MLflow</span><span class="skill-tag">Octopai</span>
+          <span class="skill-tag">OCI Data Flow</span><span class="skill-tag">OCI Data Integration</span>
+          <span class="skill-tag">AWS Location Service</span><span class="skill-tag">AWS Lambda</span>
+          <span class="skill-tag">Informatica Address Verifier</span><span class="skill-tag">Loqate</span>
+          <span class="skill-tag">OpenAI API</span><span class="skill-tag">Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="skill-group visible" data-group="crm">
+        <h4>CRM &amp; Integration</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Salesforce</span><span class="skill-tag">SOQL</span>
+          <span class="skill-tag">Kensho Link API</span>
+        </div>
+      </div>
+      <div class="skill-group visible" data-group="test">
+        <h4>Testing &amp; Automation</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Selenium WebDriver</span><span class="skill-tag">TestNG</span>
+          <span class="skill-tag">Cucumber (BDD)</span><span class="skill-tag">Page Object Model</span>
+        </div>
+      </div>
+      <div class="skill-group visible" data-group="practice">
+        <h4>Practices</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Agile / Scrum</span><span class="skill-tag">Data Governance</span>
+          <span class="skill-tag">Data Quality &amp; Profiling</span><span class="skill-tag">Data Lineage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Education</div>
+      <h2>Engineering first, then the business side of it.</h2>
+    </div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div><h4>MBA, Information Technology &amp; International Business</h4><p>University School of Management Studies, GGSIPU</p></div>
+        <div class="edu-dates">2022 — 2024</div>
+      </div>
+      <div class="edu-item">
+        <div><h4>B.Tech, Computer Science</h4><p>Manav Rachna International University, Faridabad</p></div>
+        <div class="edu-dates">2016 — 2020</div>
+      </div>
+      <div class="edu-item">
+        <div><h4>Schooling</h4><p>Kendriya Vidyalaya, Tagore Garden, New Delhi</p></div>
+        <div class="edu-dates">2004 — 2016</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="personal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Personal</div>
+      <h2>Beyond the pipelines.</h2>
+    </div>
+    <div class="personal-grid">
+      <svg class="valley-art" viewBox="0 0 300 220" role="img" aria-label="Illustration of a valley cradled between mountains">
+        <circle cx="230" cy="50" r="26" fill="var(--orange)" opacity="0.85"/>
+        <path d="M0 190 L60 100 L100 150 L150 70 L200 150 L240 110 L300 190 Z" fill="var(--panel-2)" stroke="var(--line)" stroke-width="1.5"/>
+        <path d="M0 200 L70 140 L130 185 L190 130 L240 175 L300 145 L300 220 L0 220 Z" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+      </svg>
+      <div class="personal-text">
+        <p>My roots trace back to Uttarakhand — a state cradled in the arms of the Himalayas, where valleys unfold like green terraces between the peaks and every road seems to lead to another view worth stopping for.</p>
+        <p>I was born and brought up in Delhi, and did my schooling at Kendriya Vidyalaya, Tagore Garden, New Delhi. That mix — hill roots and city upbringing — is probably why I'm equally at home planning a mountain drive and debugging a pipeline at 11 PM.</p>
+        <p>Outside of work, I'm usually driving somewhere, planning the next trip, watching or playing sports, or just picking up something new — professionally or otherwise. Staying curious is the constant.</p>
+        <div class="hobby-row">
+          <span class="hobby-tag">🚗 Driving</span>
+          <span class="hobby-tag">✈️ Travelling</span>
+          <span class="hobby-tag">🏏 Sports</span>
+          <span class="hobby-tag">📚 Learning new things</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="drives-section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">What Keeps Me Going</div>
+      <h2>Still the most curious person in the room.</h2>
+    </div>
+    <div class="drives">
+      <p>What I enjoy most about this field is that it never stops moving — a new cloud service, a new way to govern data, a new intersection with AI. I'd rather pick up the next platform than get comfortable on the last one, which is part of why I keep stacking certifications across four different clouds instead of settling into one. I also care about explaining technical decisions in plain language so the people making business calls actually understand the trade-offs.</p>
+    </div>
+  </div>
+</section>
+ 
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-row">
+      <h2>Let's build something reliable together.</h2>
+      <div class="contact-links">
+        <a href="mailto:shubhamsharma2151998@gmail.com">shubhamsharma2151998@gmail.com</a>
+        <a href="https://www.linkedin.com/in/shubham-sb131341b0" target="_blank" rel="noopener">linkedin.com/in/shubham-sb131341b0</a>
+        <span style="color:var(--text-muted); font-size:0.95rem;">Delhi, India</span>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span>Shubham Sharma — Lead Software Engineer &amp; Cloud Data Engineer</span>
+      <span>Built with care for detail, same as the pipelines.</span>
+    </div>
+  </div>
+</footer>
+ 
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+ 
+  const chips = document.querySelectorAll('.filter-chip');
+  const groups = document.querySelectorAll('.skill-group');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const filter = chip.dataset.filter;
+      groups.forEach(g => {
+        if(filter === 'all' || g.dataset.group === filter){
+          g.classList.add('visible');
+        } else {
+          g.classList.remove('visible');
+        }
+      });
+    });
+  });
+</script>
+ 
+</body>
+</html>
+ 
+
